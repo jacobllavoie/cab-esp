@@ -1,3 +1,5 @@
+// setup.cpp
+
 #include "config.h"
 #include "globals.h"
 

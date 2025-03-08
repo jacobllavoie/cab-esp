@@ -1,8 +1,11 @@
+// globals.h
+
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
 #include <Adafruit_NeoPixel.h>
 #include <EEPROM.h>
+#include <BluetoothSerial.h>
 
 extern Adafruit_NeoPixel leds;
 extern String currentEffect;
@@ -12,8 +15,9 @@ extern byte currentColorBlue;
 extern byte currentColorWhite;
 extern int animationSpeed;
 extern int brightness;
+extern BluetoothSerial SerialBT;
 
-uint32_t WheelSmooth(byte pos); // Declare WheelSmooth here.
+uint32_t WheelSmooth(byte pos);
 
 struct Effect {
     String name;

@@ -7,13 +7,16 @@ void displayHelp() {
   Serial.println("**Help Menu**");
   Serial.println("C,<color_name>: Set color (e.g., C,red)");
   Serial.println("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
-  Serial.println("E,<effect_name>: Set effect (e.g., E,rainbow)");
+  Serial.println("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
   Serial.println("S,<speed>: Set speed (ms) (e.g., S,20)");
   Serial.println("H: Display help");
-  Serial.println("Available Effects:");
-  for (int i = 0; i < numberOfEffects; i++) {
-    Serial.print("  "); Serial.println(effects[i].name);
-  }
+
+  SerialBT.println("**Help Menu**");
+  SerialBT.println("C,<color_name>: Set color (e.g., C,red)");
+  SerialBT.println("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
+  SerialBT.println("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
+  SerialBT.println("S,<speed>: Set speed (ms) (e.g., S,20)");
+  SerialBT.println("H: Display help");
 }
 
 uint32_t WheelSmooth(byte pos) {
