@@ -12,18 +12,35 @@ void setupBluetooth() {
   displayHelp();
 }
 
-void handleCommandInput() {
-  if (SerialBT.available() > 0 || Serial.available() > 0) {
-    String command;
-    if (SerialBT.available() > 0) {
-      command = SerialBT.readStringUntil('\n');
-      Serial.println("Received from Bluetooth: " + command);
+void handleBluetoothInput() {
+  static String commandBT;
+  static String commandSerial;
+  char endMarker = '\n';
+
+  // Process Bluetooth commands
+  while (SerialBT.available() > 0) {
+    char receivedChar = SerialBT.read();
+    if (receivedChar == endMarker) {
+      commandBT.trim();
+      Serial.println("Received from Bluetooth: " + commandBT);
+      processCommand(commandBT);
+      commandBT = ""; // Clear for next command
     } else {
-      command = Serial.readStringUntil('\n');
-      Serial.println("Received from Serial Monitor: " + command);
+      commandBT += receivedChar;
     }
-    command.trim();
-    processCommand(command);
+  }
+
+  // Process Serial commands
+  while (Serial.available() > 0) {
+    char receivedChar = Serial.read();
+    if (receivedChar == endMarker) {
+      commandSerial.trim();
+      Serial.println("Received from Serial Monitor: " + commandSerial);
+      processCommand(commandSerial);
+      commandSerial = ""; // Clear for next command
+    } else {
+      commandSerial += receivedChar;
+    }
   }
 }
 

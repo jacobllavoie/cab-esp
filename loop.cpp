@@ -3,6 +3,7 @@
 #include "config.h"
 #include "globals.h"
 #include "bluetooth_handler.h"
+#include "serial_handler.h"    // <-- Add the new header
 
 void loop() {
   // Heartbeat
@@ -13,8 +14,9 @@ void loop() {
     digitalWrite(HEARTBEAT_LED_PIN, !digitalRead(HEARTBEAT_LED_PIN));
   }
 
-  // This one function now handles all commands from BT and Serial
-  handleCommandInput();
+  // Handle commands from different sources
+  handleBluetoothInput(); // Renamed for clarity
+  handleSerialInput();
 
   // Run active animation if one is set
   if (currentEffect == "rainbow") {
