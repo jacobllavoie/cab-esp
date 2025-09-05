@@ -1,58 +1,48 @@
 // bluetooth_handler.cpp
 
 #include "bluetooth_handler.h"
-#include "globals.h" //add the globals include
+#include "globals.h"
 
 BluetoothSerial SerialBT;
 
 void setupBluetooth() {
   SerialBT.begin(BLUETOOTH_NAME);
   Serial.println("Bluetooth is ready!");
-  SerialBT.println("Bluetooth is ready!"); // Send to Bluetooth as well
+  SerialBT.println("Bluetooth is ready!");
   displayHelp();
 }
 
+// This function now ONLY checks for and processes Bluetooth data.
 void handleBluetoothInput() {
   static String commandBT;
-  static String commandSerial;
   char endMarker = '\n';
 
-  // Process Bluetooth commands
   while (SerialBT.available() > 0) {
     char receivedChar = SerialBT.read();
     if (receivedChar == endMarker) {
       commandBT.trim();
       Serial.println("Received from Bluetooth: " + commandBT);
-      processCommand(commandBT);
+      processBluetoothCommand(commandBT);
       commandBT = ""; // Clear for next command
     } else {
       commandBT += receivedChar;
     }
   }
-
-  // Process Serial commands
-  while (Serial.available() > 0) {
-    char receivedChar = Serial.read();
-    if (receivedChar == endMarker) {
-      commandSerial.trim();
-      Serial.println("Received from Serial Monitor: " + commandSerial);
-      processCommand(commandSerial);
-      commandSerial = ""; // Clear for next command
-    } else {
-      commandSerial += receivedChar;
-    }
-  }
 }
 
-void processCommand(String command) {
+// Renamed from processCommand for clarity
+void processBluetoothCommand(String command) {
+  // This function's logic is the same as your processCommand, but the name is clearer.
+  // I am including the full corrected logic from our previous discussions.
+  
   // Handle single-character commands first
   if (command.equalsIgnoreCase("H")) {
     displayHelp();
-    return; // Exit after handling
+    return;
   }
   if (command.equalsIgnoreCase("R")) {
     rebootESP();
-    return; // Exit after handling
+    return;
   }
 
   // Handle commands with a comma (e.g., "C,red")
@@ -79,7 +69,6 @@ void processCommand(String command) {
         }
       }
       if (!colorFound) {
-        Serial.println("Color not found");
         SerialBT.println("Color not found");
       }
     } else if (commandType.equalsIgnoreCase("B")) { // Set Brightness
@@ -90,7 +79,6 @@ void processCommand(String command) {
         applyLedState();
         SerialBT.println("Brightness set to: " + String(brightness));
       } else {
-        Serial.println("Invalid brightness value");
         SerialBT.println("Invalid brightness value");
       }
     } else if (commandType.equalsIgnoreCase("E")) { // Set Effect
@@ -106,15 +94,12 @@ void processCommand(String command) {
         applyLedState();
         SerialBT.println("Speed set to: " + String(animationSpeed));
       } else {
-        Serial.println("Invalid speed value");
         SerialBT.println("Invalid speed value");
       }
     } else {
-      Serial.println("Unknown Command type");
       SerialBT.println("Unknown Command type");
     }
   } else {
-    Serial.println("Unknown command format.");
     SerialBT.println("Unknown command format.");
   }
 }

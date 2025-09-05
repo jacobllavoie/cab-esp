@@ -28,7 +28,7 @@ extern const ColorDefinition colorTable[];
 // --- Function Prototypes ---
 void setupBluetooth();
 void handleBluetoothInput();
-void processCommand(String command);
+void processBluetoothCommand(String command);
 void displayHelp();
 void applyLedState();
 void rainbow(int brightness);
