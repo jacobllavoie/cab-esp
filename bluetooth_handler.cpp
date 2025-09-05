@@ -18,7 +18,7 @@ void handleBluetoothInput() {
   char endMarker = '\n';
 
   while (SerialBT.available() > 0) {
-    char receivedChar = Serial.read();
+    char receivedChar = SerialBT.read();
     // Check for either character
     if (receivedChar == '\n' || receivedChar == '\r') {
       commandBT.trim();

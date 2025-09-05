@@ -3,7 +3,8 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-#include <Arduino.h> 
+#include <Arduino.h>
+#include "credentials.h"
 
 // LED settings
 #define NUM_LEDS 56
