@@ -4,21 +4,26 @@
 #include "globals.h"
 
 void chasingRainbow(int brightness) {
+  static unsigned long previousMillis = 0;
   static int j = 0;
-  for (int i = 0; i < NUM_LEDS; i++) {
-    uint32_t color = WheelSmooth(((i * 256 / NUM_LEDS) + j) & 255);
 
-    byte r = (color >> 16) & 0xFF;
-    byte g = (color >> 8) & 0xFF;
-    byte b = color & 0xFF;
+  if (millis() - previousMillis >= animationSpeed) {
+    previousMillis = millis();
 
-    r = (r * brightness) / 255;
-    g = (g * brightness) / 255;
-    b = (b * brightness) / 255;
+    for (int i = 0; i < NUM_LEDS; i++) {
+      uint32_t color = WheelSmooth(((i * 256 / NUM_LEDS) + j) & 255);
 
-    leds.setPixelColor(i, r, g, b);
+      byte r = (color >> 16) & 0xFF;
+      byte g = (color >> 8) & 0xFF;
+      byte b = color & 0xFF;
+
+      r = (r * brightness) / 255;
+      g = (g * brightness) / 255;
+      b = (b * brightness) / 255;
+
+      leds.setPixelColor(i, r, g, b);
+    }
+    leds.show();
+    j++;
   }
-  leds.show();
-  j++;
-  delay(animationSpeed);
 }

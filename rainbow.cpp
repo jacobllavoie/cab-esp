@@ -4,23 +4,27 @@
 #include "globals.h"
 
 void rainbow(int brightness) {
+  static unsigned long previousMillis = 0;
   static byte hue = 0;
 
-  uint32_t color = WheelSmooth(hue);
+  if (millis() - previousMillis >= animationSpeed) {
+    previousMillis = millis();
 
-  byte r = (color >> 16) & 0xFF;
-  byte g = (color >> 8) & 0xFF;
-  byte b = color & 0xFF;
+    uint32_t color = WheelSmooth(hue);
 
-  r = (r * brightness) / 255;
-  g = (g * brightness) / 255;
-  b = (b * brightness) / 255;
+    byte r = (color >> 16) & 0xFF;
+    byte g = (color >> 8) & 0xFF;
+    byte b = color & 0xFF;
 
-  for (int i = 0; i < NUM_LEDS; i++) {
-    leds.setPixelColor(i, r, g, b);
+    r = (r * brightness) / 255;
+    g = (g * brightness) / 255;
+    b = (b * brightness) / 255;
+
+    for (int i = 0; i < NUM_LEDS; i++) {
+      leds.setPixelColor(i, r, g, b);
+    }
+    leds.show();
+
+    hue++;
   }
-  leds.show();
-
-  hue++;
-  delay(animationSpeed);
 }
