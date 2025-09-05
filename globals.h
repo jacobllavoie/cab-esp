@@ -35,5 +35,6 @@ void chasingRainbow(int brightness);
 void flashingAmberWhiteSequence(int brightness);
 void displayHelp();
 void processSerialCommand(String command);
+void rebootESP();
 
 #endif

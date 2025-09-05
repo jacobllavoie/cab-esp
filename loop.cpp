@@ -83,7 +83,10 @@ void processSerialCommand(String command) {
     saveLedStateToEEPROM(); // Save after speed change
   } else if (command.equalsIgnoreCase("H")) {
     displayHelp();
-  } else {
+  } else if (command.equalsIgnoreCase("R")) {
+    rebootESP();
+  }
+  else {
     Serial.println("Unknown command");
   }
 }

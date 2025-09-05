@@ -3,6 +3,13 @@
 #include "config.h"
 #include "globals.h"
 
+void rebootESP() {
+  Serial.println("Rebooting ESP...");
+  SerialBT.println("Rebooting ESP...");
+  delay(100); // Short delay to allow messages to send
+  ESP.restart();
+}
+
 void displayHelp() {
   Serial.println("**Help Menu**");
   Serial.println("C,<color_name>: Set color (e.g., C,red)");
@@ -10,6 +17,7 @@ void displayHelp() {
   Serial.println("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
   Serial.println("S,<speed>: Set speed (ms) (e.g., S,20)");
   Serial.println("H: Display help");
+  Serial.println("R: Reboot the device");
 
   SerialBT.println("**Help Menu**");
   SerialBT.println("C,<color_name>: Set color (e.g., C,red)");
@@ -17,6 +25,7 @@ void displayHelp() {
   SerialBT.println("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
   SerialBT.println("S,<speed>: Set speed (ms) (e.g., S,20)");
   SerialBT.println("H: Display help");
+  SerialBT.println("R: Reboot the device");
 }
 
 uint32_t WheelSmooth(byte pos) {

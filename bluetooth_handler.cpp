@@ -34,6 +34,8 @@ void processCommand(String command) {
     String commandData;
     if (command == "H") {
       displayHelp();
+    } else if (command == "R") { // Add this else-if block
+      rebootESP();
     } else {
       commandType = command.substring(0, commaIndex);
       commandData = command.substring(commaIndex + 1);
