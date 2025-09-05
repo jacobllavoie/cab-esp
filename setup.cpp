@@ -2,10 +2,13 @@
 
 #include "config.h"
 #include "globals.h"
+#include "bluetooth_handler.h"
 
 void setup() {
   Serial.begin(115200);
   Serial.println("Cab-ESP is ready!");
+
+  setupBluetooth();
 
   pinMode(HEARTBEAT_LED_PIN, OUTPUT);
   digitalWrite(HEARTBEAT_LED_PIN, HIGH);

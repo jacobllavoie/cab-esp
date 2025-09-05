@@ -2,6 +2,7 @@
 
 #include "config.h"
 #include "globals.h"
+#include "bluetooth_handler.h"
 
 void loop() {
   // Heartbeat
@@ -11,6 +12,8 @@ void loop() {
     previousMillis = millis();
     digitalWrite(HEARTBEAT_LED_PIN, !digitalRead(HEARTBEAT_LED_PIN));
   }
+
+  handleCommandInput();
 
   // Run active animation
   if (currentEffect == "rainbow") {
