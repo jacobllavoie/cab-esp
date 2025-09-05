@@ -4,13 +4,22 @@
 #include "globals.h"
 #include "config.h"
 
-// This function checks for and reads serial data
+// This function now uses a non-blocking method to read serial data
 void handleSerialInput() {
-  if (Serial.available() > 0) {
-    String command = Serial.readStringUntil('\n');
-    command.trim();
-    Serial.println("Received from Serial Monitor: " + command);
-    processSerialCommand(command);
+  static String commandSerial;
+  char endMarker = '\n';
+
+  while (Serial.available() > 0) {
+    char receivedChar = Serial.read();
+    // Check for either character
+    if (receivedChar == '\n' || receivedChar == '\r') {
+      commandSerial.trim();
+      Serial.println("Received from Serial Monitor: " + commandSerial);
+      processSerialCommand(commandSerial);
+      commandSerial = ""; // Clear for next command
+    } else {
+      commandSerial += receivedChar;
+    }
   }
 }
 
@@ -23,6 +32,10 @@ void processSerialCommand(String command) {
   }
   if (command.equalsIgnoreCase("R")) {
     rebootESP();
+    return;
+  }
+  if (command.equalsIgnoreCase("STATUS")) { // <-- Add this block
+    displayStatus();
     return;
   }
 

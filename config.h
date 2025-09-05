@@ -6,11 +6,11 @@
 #include <Arduino.h> 
 
 // LED settings
-#define NUM_LEDS 3
-#define DATA_PIN 2
+#define NUM_LEDS 56
+#define DATA_PIN 13
 
 // Heartbeat LED settings
-#define HEARTBEAT_LED_PIN 21 // Fix Me for Cardputer
+#define HEARTBEAT_LED_PIN 2
 
 // EEPROM addresses
 #define EEPROM_EFFECT_ADDR 0

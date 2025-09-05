@@ -5,7 +5,6 @@
 
 #include <Arduino.h>
 
-
 void handleSerialInput();
 void processSerialCommand(String command);
 

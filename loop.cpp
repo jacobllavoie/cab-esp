@@ -7,7 +7,7 @@
 
 void loop() {
   // Heartbeat
-  static unsigned long previousMillis = millis();
+  static unsigned long previousMillis = 0;
   const unsigned long interval = 1000;
   if (millis() - previousMillis >= interval) {
     previousMillis = millis();

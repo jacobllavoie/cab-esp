@@ -18,8 +18,9 @@ void handleBluetoothInput() {
   char endMarker = '\n';
 
   while (SerialBT.available() > 0) {
-    char receivedChar = SerialBT.read();
-    if (receivedChar == endMarker) {
+    char receivedChar = Serial.read();
+    // Check for either character
+    if (receivedChar == '\n' || receivedChar == '\r') {
       commandBT.trim();
       Serial.println("Received from Bluetooth: " + commandBT);
       processBluetoothCommand(commandBT);
@@ -42,6 +43,10 @@ void processBluetoothCommand(String command) {
   }
   if (command.equalsIgnoreCase("R")) {
     rebootESP();
+    return;
+  }
+  if (command.equalsIgnoreCase("STATUS")) { // <-- Add this block
+    displayStatus();
     return;
   }
 

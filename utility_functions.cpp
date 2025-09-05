@@ -3,6 +3,17 @@
 #include "config.h"
 #include "globals.h"
 
+void displayStatus() {
+  String statusMessage = "** Current Status **\n";
+  statusMessage += "Effect: " + (currentEffect == "" ? "Solid Color" : currentEffect) + "\n";
+  statusMessage += "Brightness: " + String(brightness) + "\n";
+  statusMessage += "Animation Speed: " + String(animationSpeed) + "\n";
+  statusMessage += "Color (R,G,B,W): " + String(currentColorRed) + "," + String(currentColorGreen) + "," + String(currentColorBlue) + "," + String(currentColorWhite) + "\n";
+  
+  Serial.print(statusMessage);
+  SerialBT.print(statusMessage);
+}
+
 void rebootESP() {
   Serial.println("Rebooting ESP...");
   SerialBT.println("Rebooting ESP...");
@@ -18,6 +29,7 @@ void displayHelp() {
   Serial.println("S,<speed>: Set speed (ms) (e.g., S,20)");
   Serial.println("H: Display help");
   Serial.println("R: Reboot the device");
+  Serial.println("STATUS: Display current status");
 
   SerialBT.println("**Help Menu**");
   SerialBT.println("C,<color_name>: Set color (e.g., C,red)");
@@ -26,6 +38,7 @@ void displayHelp() {
   SerialBT.println("S,<speed>: Set speed (ms) (e.g., S,20)");
   SerialBT.println("H: Display help");
   SerialBT.println("R: Reboot the device");
+  SerialBT.println("STATUS: Display current status");
 }
 
 uint32_t WheelSmooth(byte pos) {
