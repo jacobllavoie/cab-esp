@@ -7,9 +7,9 @@
 
 void setup() {
   Serial.begin(115200);
-  Serial.println("Cab-ESP is ready!");
+  DEBUG_PRINTLN("Cab-ESP is ready!");
 
-  setupWifi();
+  // setupWifi();
   setupBluetooth();
 
   pinMode(HEARTBEAT_LED_PIN, OUTPUT);

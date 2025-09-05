@@ -14,7 +14,7 @@ void handleSerialInput() {
     // Check for either character
     if (receivedChar == '\n' || receivedChar == '\r') {
       commandSerial.trim();
-      Serial.println("Received from Serial Monitor: " + commandSerial);
+      DEBUG_PRINTLN("Received from Serial Monitor: " + commandSerial);
       processSerialCommand(commandSerial);
       commandSerial = ""; // Clear for next command
     } else {
@@ -58,34 +58,34 @@ void processSerialCommand(String command) {
           saveLedStateToEEPROM();
           applyLedState();
           colorFound = true;
-          Serial.println("Color set to: " + String(colorTable[i].name));
+          DEBUG_PRINTLN("Color set to: " + String(colorTable[i].name));
           break;
         }
       }
       if (!colorFound) {
-        Serial.println("Color not found");
+        DEBUG_PRINTLN("Color not found");
       }
     } else if (commandType.equalsIgnoreCase("B")) { // Set Brightness
       brightness = commandData.toInt();
       brightness = constrain(brightness, 0, 255);
       saveLedStateToEEPROM();
       applyLedState();
-      Serial.println("Brightness set to: " + String(brightness));
+      DEBUG_PRINTLN("Brightness set to: " + String(brightness));
     } else if (commandType.equalsIgnoreCase("E")) { // Set Effect
       currentEffect = commandData;
       saveLedStateToEEPROM();
       applyLedState();
-      Serial.println("Effect set to: " + currentEffect);
+      DEBUG_PRINTLN("Effect set to: " + currentEffect);
     } else if (commandType.equalsIgnoreCase("S")) { // Set Speed
       animationSpeed = commandData.toInt();
       animationSpeed = constrain(animationSpeed, 1, 255);
       saveLedStateToEEPROM();
       applyLedState();
-      Serial.println("Speed set to: " + String(animationSpeed));
+      DEBUG_PRINTLN("Speed set to: " + String(animationSpeed));
     } else {
-      Serial.println("Unknown Command type");
+      DEBUG_PRINTLN("Unknown Command type");
     }
   } else {
-    Serial.println("Unknown command format.");
+    DEBUG_PRINTLN("Unknown command format.");
   }
 }

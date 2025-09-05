@@ -15,9 +15,7 @@ void loop() {
     digitalWrite(HEARTBEAT_LED_PIN, !digitalRead(HEARTBEAT_LED_PIN));
   }
 
-  handleWebServer();
-
-  // Handle commands from different sources
+  // handleWebServer();
   handleBluetoothInput();
   handleSerialInput();
 

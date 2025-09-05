@@ -15,30 +15,30 @@ void displayStatus() {
 }
 
 void rebootESP() {
-  Serial.println("Rebooting ESP...");
-  SerialBT.println("Rebooting ESP...");
+  DEBUG_PRINTLN("Rebooting ESP...");
+  DEBUG_PRINTLN_BT("Rebooting ESP...");
   delay(100); // Short delay to allow messages to send
   ESP.restart();
 }
 
 void displayHelp() {
-  Serial.println("**Help Menu**");
-  Serial.println("C,<color_name>: Set color (e.g., C,red)");
-  Serial.println("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
-  Serial.println("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
-  Serial.println("S,<speed>: Set speed (ms) (e.g., S,20)");
-  Serial.println("H: Display help");
-  Serial.println("R: Reboot the device");
-  Serial.println("STATUS: Display current status");
+  DEBUG_PRINTLN("**Help Menu**");
+  DEBUG_PRINTLN("C,<color_name>: Set color (e.g., C,red)");
+  DEBUG_PRINTLN("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
+  DEBUG_PRINTLN("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
+  DEBUG_PRINTLN("S,<speed>: Set speed (ms) (e.g., S,20)");
+  DEBUG_PRINTLN("H: Display help");
+  DEBUG_PRINTLN("R: Reboot the device");
+  DEBUG_PRINTLN("STATUS: Display current status");
 
-  SerialBT.println("**Help Menu**");
-  SerialBT.println("C,<color_name>: Set color (e.g., C,red)");
-  SerialBT.println("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
-  SerialBT.println("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
-  SerialBT.println("S,<speed>: Set speed (ms) (e.g., S,20)");
-  SerialBT.println("H: Display help");
-  SerialBT.println("R: Reboot the device");
-  SerialBT.println("STATUS: Display current status");
+  DEBUG_PRINTLN_BT("**Help Menu**");
+  DEBUG_PRINTLN_BT("C,<color_name>: Set color (e.g., C,red)");
+  DEBUG_PRINTLN_BT("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
+  DEBUG_PRINTLN_BT("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
+  DEBUG_PRINTLN_BT("S,<speed>: Set speed (ms) (e.g., S,20)");
+  DEBUG_PRINTLN_BT("H: Display help");
+  DEBUG_PRINTLN_BT("R: Reboot the device");
+  DEBUG_PRINTLN_BT("STATUS: Display current status");
 }
 
 uint32_t WheelSmooth(byte pos) {

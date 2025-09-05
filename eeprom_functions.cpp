@@ -4,41 +4,41 @@
 #include "globals.h"
 
 void saveLedStateToEEPROM() {
-  Serial.println("saveLedStateToEEPROM: Starting");
+  DEBUG_PRINTLN("saveLedStateToEEPROM: Starting");
 
   // Save string length and characters
   int effectLength = currentEffect.length();
   Serial.print("saveLedStateToEEPROM: Effect Length = ");
-  Serial.println(effectLength);
+  DEBUG_PRINTLN(effectLength);
   EEPROM.write(EEPROM_EFFECT_ADDR, effectLength);
   for (int i = 0; i < effectLength; i++) {
     EEPROM.write(EEPROM_EFFECT_ADDR + 1 + i, currentEffect[i]);
   }
   Serial.print("saveLedStateToEEPROM: Effect = ");
-  Serial.println(currentEffect);
+  DEBUG_PRINTLN(currentEffect);
 
   // Save other LED state variables
   Serial.print("saveLedStateToEEPROM: Brightness = ");
-  Serial.println(brightness);
+  DEBUG_PRINTLN(brightness);
   EEPROM.write(EEPROM_BRIGHTNESS_ADDR, brightness);
   Serial.print("saveLedStateToEEPROM: Red = ");
-  Serial.println(currentColorRed);
+  DEBUG_PRINTLN(currentColorRed);
   EEPROM.write(EEPROM_RED_ADDR, currentColorRed);
   Serial.print("saveLedStateToEEPROM: Green = ");
-  Serial.println(currentColorGreen);
+  DEBUG_PRINTLN(currentColorGreen);
   EEPROM.write(EEPROM_GREEN_ADDR, currentColorGreen);
   Serial.print("saveLedStateToEEPROM: Blue = ");
-  Serial.println(currentColorBlue);
+  DEBUG_PRINTLN(currentColorBlue);
   EEPROM.write(EEPROM_BLUE_ADDR, currentColorBlue);
   Serial.print("saveLedStateToEEPROM: White = ");
-  Serial.println(currentColorWhite);
+  DEBUG_PRINTLN(currentColorWhite);
   EEPROM.write(EEPROM_WHITE_ADDR, currentColorWhite);
   Serial.print("saveLedStateToEEPROM: Speed = ");
-  Serial.println(animationSpeed);
+  DEBUG_PRINTLN(animationSpeed);
   EEPROM.write(EEPROM_SPEED_ADDR, animationSpeed);
   EEPROM.commit();
 
-  Serial.println("saveLedStateToEEPROM: Finished");
+  DEBUG_PRINTLN("saveLedStateToEEPROM: Finished");
 }
 
 void readLedStateFromEEPROM() {
@@ -74,7 +74,7 @@ void applyLedState() {
   Serial.print(", B=");
   Serial.print(currentColorBlue);
   Serial.print(", W=");
-  Serial.println(currentColorWhite);
+  DEBUG_PRINTLN(currentColorWhite);
 
   if (currentEffect.equalsIgnoreCase("rainbow")) {
     rainbow(brightness);

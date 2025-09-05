@@ -4,6 +4,23 @@
 #define CONFIG_H
 
 #include <Arduino.h>
+
+#define DEBUG_ENABLED 0 // Set to 1 to enable debug messages, 0 to disable
+
+#if DEBUG_ENABLED
+  #define DEBUG_PRINT(x)    Serial.print(x)
+  #define DEBUG_PRINTLN(x)  Serial.println(x)
+  #define DEBUG_PRINTF(x, ...) Serial.printf(x, ##__VA_ARGS__)
+  #define DEBUG_PRINT_BT(x)   SerialBT.print(x)
+  #define DEBUG_PRINTLN_BT(x) SerialBT.println(x)
+#else
+  #define DEBUG_PRINT(x)
+  #define DEBUG_PRINTLN(x)
+  #define DEBUG_PRINTF(x, ...)
+  #define DEBUG_PRINT_BT(x)
+  #define DEBUG_PRINTLN_BT(x)
+#endif
+
 #include "credentials.h"
 
 // LED settings

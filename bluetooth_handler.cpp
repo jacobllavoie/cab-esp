@@ -7,8 +7,8 @@ BluetoothSerial SerialBT;
 
 void setupBluetooth() {
   SerialBT.begin(BLUETOOTH_NAME);
-  Serial.println("Bluetooth is ready!");
-  SerialBT.println("Bluetooth is ready!");
+  DEBUG_PRINTLN("Bluetooth is ready!");
+  DEBUG_PRINTLN_BT("Bluetooth is ready!");
   displayHelp();
 }
 
@@ -22,7 +22,7 @@ void handleBluetoothInput() {
     // Check for either character
     if (receivedChar == '\n' || receivedChar == '\r') {
       commandBT.trim();
-      Serial.println("Received from Bluetooth: " + commandBT);
+      DEBUG_PRINTLN("Received from Bluetooth: " + commandBT);
       processBluetoothCommand(commandBT);
       commandBT = ""; // Clear for next command
     } else {
@@ -69,12 +69,12 @@ void processBluetoothCommand(String command) {
           saveLedStateToEEPROM();
           applyLedState();
           colorFound = true;
-          SerialBT.println("Color set to: " + commandData);
+          DEBUG_PRINTLN_BT("Color set to: " + commandData);
           break;
         }
       }
       if (!colorFound) {
-        SerialBT.println("Color not found");
+        DEBUG_PRINTLN_BT("Color not found");
       }
     } else if (commandType.equalsIgnoreCase("B")) { // Set Brightness
       int newBrightness = commandData.toInt();
@@ -82,29 +82,29 @@ void processBluetoothCommand(String command) {
         brightness = newBrightness;
         saveLedStateToEEPROM();
         applyLedState();
-        SerialBT.println("Brightness set to: " + String(brightness));
+        DEBUG_PRINTLN_BT("Brightness set to: " + String(brightness));
       } else {
-        SerialBT.println("Invalid brightness value");
+        DEBUG_PRINTLN_BT("Invalid brightness value");
       }
     } else if (commandType.equalsIgnoreCase("E")) { // Set Effect
       currentEffect = commandData;
       saveLedStateToEEPROM();
       applyLedState();
-      SerialBT.println("Effect set to: " + currentEffect);
+      DEBUG_PRINTLN_BT("Effect set to: " + currentEffect);
     } else if (commandType.equalsIgnoreCase("S")) { // Set Speed
       int newSpeed = commandData.toInt();
       if (newSpeed > 0) {
         animationSpeed = newSpeed;
         saveLedStateToEEPROM();
         applyLedState();
-        SerialBT.println("Speed set to: " + String(animationSpeed));
+        DEBUG_PRINTLN_BT("Speed set to: " + String(animationSpeed));
       } else {
-        SerialBT.println("Invalid speed value");
+        DEBUG_PRINTLN_BT("Invalid speed value");
       }
     } else {
-      SerialBT.println("Unknown Command type");
+      DEBUG_PRINTLN_BT("Unknown Command type");
     }
   } else {
-    SerialBT.println("Unknown command format.");
+    DEBUG_PRINTLN_BT("Unknown command format.");
   }
 }

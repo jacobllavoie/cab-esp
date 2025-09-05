@@ -71,7 +71,7 @@ WebServer server(80);
 
 void setupWifi() {
   Serial.print("Connecting to ");
-  Serial.println(WIFI_SSID);
+  DEBUG_PRINTLN(WIFI_SSID);
 
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   while (WiFi.status() != WL_CONNECTED) {
@@ -79,14 +79,34 @@ void setupWifi() {
     Serial.print(".");
   }
 
-  Serial.println("");
-  Serial.println("WiFi connected.");
+  DEBUG_PRINTLN("");
+  DEBUG_PRINTLN("WiFi connected.");
   Serial.print("IP address: ");
-  Serial.println(WiFi.localIP());
+  DEBUG_PRINTLN(WiFi.localIP());
 
-  // A simple page to confirm the server is running
   server.on("/", []() {
-    server.send(200, "text/plain", "Cab-ESP is running!");
+    server.send(200, "text/html", INDEX_HTML);
+  });
+
+  server.on("/set", []() {
+    if (server.hasArg("effect")) {
+      currentEffect = server.arg("effect");
+      DEBUG_PRINTLN("Effect set to: " + currentEffect);
+    }
+    if (server.hasArg("color")) {
+      String colorStr = server.arg("color");
+      sscanf(colorStr.c_str(), "%hhu,%hhu,%hhu", &currentColorRed, &currentColorGreen, &currentColorBlue);
+      currentEffect = ""; // Setting a color cancels an effect
+      Serial.printf("Color set to: R=%d, G=%d, B=%d\n", currentColorRed, currentColorGreen, currentColorBlue);
+    }
+    if (server.hasArg("brightness")) {
+      brightness = server.arg("brightness").toInt();
+      DEBUG_PRINTLN("Brightness set to: " + String(brightness));
+    }
+    
+    saveLedStateToEEPROM();
+    applyLedState();
+    server.send(200, "text/plain", "OK");
   });
 
   // Start ElegantOTA
@@ -94,7 +114,7 @@ void setupWifi() {
   
   // Start the server
   server.begin();
-  Serial.println("HTTP server started.");
+  DEBUG_PRINTLN("HTTP server started.");
 }
 
 // This function must be called in the main loop
