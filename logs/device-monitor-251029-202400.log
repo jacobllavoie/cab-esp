@@ -1,0 +1,51 @@
+applyLedState: R=255, G=255, B=255, W=255
+BLE client connected: 76:b3:a9:86:e7:33
+BLE write chunk (len=6): 'help\n'
+Received from BLE: help
+Unknown command format.
+BLE write chunk (len=2): 'h\'
+BLE write chunk (len=3): 'h\n'
+Received from BLE: h\h
+Unknown command format.
+BLE write chunk (len=3): 'h\n'
+Received from BLE: h
+**Help Menu**
+C,<color_name>: Set color (e.g., C,red)
+B,<brightness>: Set brightness (0-255) (e.g., B,128)
+E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)
+S,<speed>: Set speed (ms) (e.g., S,20)
+H: Display help
+R: Reboot the device
+STATUS: Display current status
+**Help Menu**
+C,<color_name>: Set color (e.g., C,red)
+B,<brightness>: Set brightness (0-255) (e.g., B,128)
+E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)
+S,<speed>: Set speed (ms) (e.g., S,20)
+H: Display help
+R: Reboot the device
+STATUS: Display current status
+BLE write chunk (len=3): 'r\n'
+Received from BLE: r
+Rebooting ESP...
+Rebooting ESP...
+ESP-ROM:esp32c6-20220919
+Build:Sep 19 2022
+rst:0xc (SW_CPU),boot:0xc (SPI_FAST_FLASH_BOOT)
+Saved PC:0x4001975a
+SPIWP:0xee
+mode:DIO, clock div:2
+load:0x40875730,len:0x12e0
+load:0x4086b910,len:0xda8
+load:0x4086e610,len:0x3180
+entry 0x4086b910
+E (547) esp_core_dump_flash: No core dump partition found!
+E (548) esp_core_dump_flash: No cCab-ESP is ready!
+BLE started: cab-ESP-BLE
+BLE ready
+applyLedState: R=255, G=255, B=255, W=255
+BLE client connected: 47:56:35:aa:73:0c
+BLE write chunk (len=8): 'C, red\n'
+Received from BLE: C, red
+Color not found
+BLE client disconnected (reason 531): 47:56:35:aa:73:0c

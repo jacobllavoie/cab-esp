@@ -1,0 +1,8 @@
+applyLedState: R=255, G=255, B=255, W=255
+BLE client connected: 67:f0:8e:db:b7:e4
+BLE write chunk (len=6): 'help/n'
+BLE write chunk (len=2): 'he'
+BLE write chunk (len=4): 'lp/n'
+BLE write chunk (len=2): 'he'
+BLE write chunk (len=4): 'lp\n'
+BLE write chunk (len=6): 'help\n'

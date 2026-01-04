@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CAB-ESP Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .status.disconnected {
+            background: #fee;
+            color: #c33;
+        }
+        
+        .status.connected {
+            background: #efe;
+            color: #3c3;
+        }
+        
+        .status.connecting {
+            background: #ffeaa7;
+            color: #d63031;
+        }
+        
+        button {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        button:active {
+            transform: scale(0.98);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+        
+        .control-group {
+            margin: 20px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .control-group h3 {
+            margin-bottom: 15px;
+            color: #667eea;
+            font-size: 18px;
+        }
+        
+        label {
+            display: block;
+            margin: 15px 0 5px 0;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        input[type="color"] {
+            width: 100%;
+            height: 50px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        
+        .value-display {
+            display: inline-block;
+            padding: 5px 10px;
+            background: white;
+            border-radius: 5px;
+            margin-left: 10px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .color-presets {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .color-preset {
+            width: 100%;
+            height: 50px;
+            border: 3px solid transparent;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .color-preset:hover {
+            border-color: #667eea;
+            transform: scale(1.05);
+        }
+        
+        .effect-buttons {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        
+        .effect-buttons button {
+            margin: 0;
+        }
+        
+        #console {
+            margin-top: 20px;
+            padding: 15px;
+            background: #2d3436;
+            color: #00ff00;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚕 CAB-ESP Control</h1>
+        
+        <div id="status" class="status disconnected">
+            Disconnected
+        </div>
+        
+        <button id="connectBtn" class="btn-primary">Connect to ESP</button>
+        <button id="disconnectBtn" class="btn-danger hidden">Disconnect</button>
+        
+        <div id="controls" class="hidden">
+            <div class="control-group">
+                <h3>💡 Brightness</h3>
+                <label>
+                    Brightness: <span class="value-display" id="brightnessValue">128</span>
+                </label>
+                <input type="range" id="brightness" min="0" max="255" value="128">
+            </div>
+            
+            <div class="control-group">
+                <h3>🎨 Color</h3>
+                <label>Pick Color:</label>
+                <input type="color" id="colorPicker" value="#ff0000">
+                
+                <label style="margin-top: 15px;">Quick Colors:</label>
+                <div class="color-presets">
+                    <div class="color-preset" style="background: red;" data-color="red"></div>
+                    <div class="color-preset" style="background: green;" data-color="green"></div>
+                    <div class="color-preset" style="background: blue;" data-color="blue"></div>
+                    <div class="color-preset" style="background: white; border: 1px solid #ddd;" data-color="white"></div>
+                    <div class="color-preset" style="background: yellow;" data-color="yellow"></div>
+                    <div class="color-preset" style="background: cyan;" data-color="cyan"></div>
+                    <div class="color-preset" style="background: magenta;" data-color="magenta"></div>
+                    <div class="color-preset" style="background: orange;" data-color="orange"></div>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3>✨ Effects</h3>
+                <div class="effect-buttons">
+                    <button onclick="sendEffect('rainbow')">Rainbow</button>
+                    <button onclick="sendEffect('chasing_rainbow')">Chasing</button>
+                    <button onclick="sendEffect('flashing_amber')">Flash Amber</button>
+                    <button onclick="sendEffect('flashing_amber_white')">Amber+White</button>
+                    <button onclick="sendEffect('off')" class="btn-danger">Off</button>
+                    <button onclick="sendCommand('STATUS')" class="btn-success">Status</button>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3>⚡ Speed</h3>
+                <label>
+                    Animation Speed: <span class="value-display" id="speedValue">50</span> ms
+                </label>
+                <input type="range" id="speed" min="1" max="200" value="50">
+            </div>
+            
+            <div class="control-group">
+                <h3>⚙️ System</h3>
+                <button onclick="sendCommand('H')" class="btn-success">Help</button>
+                <button onclick="rebootESP()" class="btn-danger">Reboot ESP</button>
+            </div>
+        </div>
+        
+        <div id="console"></div>
+    </div>
+
+    <script>
+        // BLE UUIDs from your ESP firmware
+        const SERVICE_UUID = 'edc01af1-5f53-4ee0-83df-e6888b252f6e';
+        const CHAR_UUID_WRITE = 'edc01af2-5f53-4ee0-83df-e6888b252f6e';
+        const CHAR_UUID_NOTIFY = 'edc01af3-5f53-4ee0-83df-e6888b252f6e';
+
+        let bleDevice = null;
+        let bleServer = null;
+        let writeCharacteristic = null;
+        let notifyCharacteristic = null;
+
+        // UI Elements
+        const statusEl = document.getElementById('status');
+        const connectBtn = document.getElementById('connectBtn');
+        const disconnectBtn = document.getElementById('disconnectBtn');
+        const controlsEl = document.getElementById('controls');
+        const consoleEl = document.getElementById('console');
+        const brightnessSlider = document.getElementById('brightness');
+        const brightnessValue = document.getElementById('brightnessValue');
+        const speedSlider = document.getElementById('speed');
+        const speedValue = document.getElementById('speedValue');
+        const colorPicker = document.getElementById('colorPicker');
+
+        // Console logging
+        function log(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            consoleEl.textContent += `[${timestamp}] ${message}\n`;
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+        }
+
+        // Update status display
+        function updateStatus(status, type) {
+            statusEl.textContent = status;
+            statusEl.className = `status ${type}`;
+        }
+
+        // Connect to BLE device
+        connectBtn.addEventListener('click', async () => {
+            try {
+                log('Requesting Bluetooth device...');
+                updateStatus('Scanning...', 'connecting');
+                
+                bleDevice = await navigator.bluetooth.requestDevice({
+                    filters: [{ services: [SERVICE_UUID] }],
+                    optionalServices: [SERVICE_UUID]
+                });
+
+                log(`Found device: ${bleDevice.name}`);
+                updateStatus('Connecting...', 'connecting');
+
+                bleDevice.addEventListener('gattserverdisconnected', onDisconnected);
+
+                bleServer = await bleDevice.gatt.connect();
+                log('Connected to GATT server');
+
+                const service = await bleServer.getPrimaryService(SERVICE_UUID);
+                log('Got service');
+
+                writeCharacteristic = await service.getCharacteristic(CHAR_UUID_WRITE);
+                log('Got write characteristic');
+
+                notifyCharacteristic = await service.getCharacteristic(CHAR_UUID_NOTIFY);
+                await notifyCharacteristic.startNotifications();
+                notifyCharacteristic.addEventListener('characteristicvaluechanged', handleNotification);
+                log('Notifications enabled');
+
+                updateStatus(`Connected to ${bleDevice.name}`, 'connected');
+                connectBtn.classList.add('hidden');
+                disconnectBtn.classList.remove('hidden');
+                controlsEl.classList.remove('hidden');
+                
+                log('Ready to send commands!');
+            } catch (error) {
+                log(`ERROR: ${error}`);
+                updateStatus('Connection failed', 'disconnected');
+            }
+        });
+
+        // Disconnect
+        disconnectBtn.addEventListener('click', () => {
+            if (bleDevice && bleDevice.gatt.connected) {
+                bleDevice.gatt.disconnect();
+            }
+        });
+
+        function onDisconnected() {
+            log('Disconnected from device');
+            updateStatus('Disconnected', 'disconnected');
+            connectBtn.classList.remove('hidden');
+            disconnectBtn.classList.add('hidden');
+            controlsEl.classList.add('hidden');
+            bleDevice = null;
+            bleServer = null;
+            writeCharacteristic = null;
+            notifyCharacteristic = null;
+        }
+
+        // Handle notifications from ESP
+        function handleNotification(event) {
+            const value = new TextDecoder().decode(event.target.value);
+            log(`ESP: ${value}`);
+        }
+
+        // Send command to ESP
+        async function sendCommand(command) {
+            if (!writeCharacteristic) {
+                log('ERROR: Not connected');
+                return;
+            }
+
+            try {
+                const encoder = new TextEncoder();
+                await writeCharacteristic.writeValue(encoder.encode(command + '\n'));
+                log(`Sent: ${command}`);
+            } catch (error) {
+                log(`ERROR sending command: ${error}`);
+            }
+        }
+
+        // Brightness control
+        brightnessSlider.addEventListener('input', (e) => {
+            brightnessValue.textContent = e.target.value;
+        });
+
+        brightnessSlider.addEventListener('change', (e) => {
+            sendCommand(`B,${e.target.value}`);
+        });
+
+        // Speed control
+        speedSlider.addEventListener('input', (e) => {
+            speedValue.textContent = e.target.value;
+        });
+
+        speedSlider.addEventListener('change', (e) => {
+            sendCommand(`S,${e.target.value}`);
+        });
+
+        // Color picker
+        colorPicker.addEventListener('change', (e) => {
+            const hex = e.target.value;
+            const r = parseInt(hex.substr(1,2), 16);
+            const g = parseInt(hex.substr(3,2), 16);
+            const b = parseInt(hex.substr(5,2), 16);
+            sendCommand(`C,${r},${g},${b},0`);
+        });
+
+        // Color presets
+        document.querySelectorAll('.color-preset').forEach(preset => {
+            preset.addEventListener('click', () => {
+                const color = preset.dataset.color;
+                sendCommand(`C,${color}`);
+            });
+        });
+
+        // Effect control
+        function sendEffect(effect) {
+            if (effect === 'off') {
+                sendCommand('B,0');
+            } else {
+                sendCommand(`E,${effect}`);
+            }
+        }
+
+        // Reboot with confirmation
+        function rebootESP() {
+            if (confirm('Are you sure you want to reboot the ESP?')) {
+                sendCommand('R');
+            }
+        }
+
+        // Check Web Bluetooth support
+        if (!navigator.bluetooth) {
+            log('ERROR: Web Bluetooth not supported!');
+            log('Please use Chrome, Edge, or Safari 16+');
+            updateStatus('Browser not supported', 'disconnected');
+            connectBtn.disabled = true;
+        } else {
+            log('Web Bluetooth supported');
+            log('Click "Connect to ESP" to start');
+        }
+    </script>
+</body>
+</html>

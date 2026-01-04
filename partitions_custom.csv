@@ -1,0 +1,10 @@
+# Name,   Type, SubType, Offset,   Size, Flags
+# Explicit offsets so bootloader and esptool agree where partitions live.
+# app0 is placed at 0x10000 (the address PlatformIO/esptool writes the firmware to).
+nvs,      data, nvs,     0x9000,   0x5000
+otadata,  data, ota,     0xe000,   0x2000
+app0,     app,  factory, 0x10000,  0x5A0000
+spiffs,   data, spiffs,  0x5B0000, 0xA0000
+
+# Notes:
+# - app0 sized to 0x5A0000 (~5.7MB) on an 8MB flash chip. Adjust if needed.
