@@ -19,8 +19,6 @@ void loop() {
   const unsigned long interval = 500;
   if (millis() - previousMillis >= interval) {
     previousMillis = millis();
-    // Heartbeat LED temporarily disabled
-    /*
     // Toggle the addressable heartbeat pixel
     heartbeatPixelOn = !heartbeatPixelOn;
     if (heartbeatPixelOn) {
@@ -30,7 +28,6 @@ void loop() {
       heartbeatPixel.setPixelColor(0, 0); // off
     }
     heartbeatPixel.show();
-    */
   }
 
   // handleWebServer();

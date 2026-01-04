@@ -28,8 +28,8 @@
 #define NUM_LEDS 56
 #define DATA_PIN 13
 
-// Heartbeat pixel settings (use a single WS2812/WS6812 LED on GPIO8)
-#define HEARTBEAT_PIN 8
+// Heartbeat pixel settings (use a single WS2812/WS6812 LED on GPIO2)
+#define HEARTBEAT_PIN 2
 #define HEARTBEAT_NUM_LEDS 1
 // Brightness for the heartbeat pixel (0-255). Lower values keep it dim.
 #define HEARTBEAT_BRIGHTNESS 24

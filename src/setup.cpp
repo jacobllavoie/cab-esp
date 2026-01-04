@@ -18,12 +18,12 @@ void setup() {
   Serial.println("BLE init done");
 
   // Initialize heartbeat addressable pixel
-  // Temporarily disabled - may be causing watchdog reset on GPIO8
-  // heartbeatPixel.begin();
-  // heartbeatPixel.setBrightness(HEARTBEAT_BRIGHTNESS);
-  // heartbeatPixel.setPixelColor(0, 0);
-  // heartbeatPixel.show();
-  Serial.println("Heartbeat LED init skipped (disabled)");
+  heartbeatPixel.begin();
+  heartbeatPixel.setBrightness(HEARTBEAT_BRIGHTNESS);
+  // Start with the heartbeat pixel off (use 2-arg overload: index, color)
+  heartbeatPixel.setPixelColor(0, 0);
+  heartbeatPixel.show();
+  Serial.println("Heartbeat LED init done");
 
   EEPROM.begin(EEPROM_SIZE);
   leds.begin();
