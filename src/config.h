@@ -55,14 +55,16 @@ struct ColorDefinition {
 };
 
 const ColorDefinition colorTable[] = {
-  {"red",    0xFF000000},
-  {"green",  0x00FF0000},
-  {"blue",   0x0000FF00},
-  {"white",  0x000000FF},
-  {"purple", 0x80008000},
-  {"yellow", 0xFFFF0000},
-  {"cyan",   0x00FFFF00},
-  {"black",  0x00000000},
+  {"red",     0xFF000000},
+  {"green",   0x00FF0000},
+  {"blue",    0x0000FF00},
+  {"white",   0x000000FF},
+  {"purple",  0x80008000},
+  {"yellow",  0xFFFF0000},
+  {"cyan",    0x00FFFF00},
+  {"magenta", 0xFF00FF00},
+  {"amber",   0xFF7F0000},
+  {"black",   0x00000000},
 };
 
 #endif

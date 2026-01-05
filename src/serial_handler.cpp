@@ -47,23 +47,60 @@ void processSerialCommand(String command) {
 
     if (commandType.equalsIgnoreCase("C")) { // Set Color
       bool colorFound = false;
-      for (int i = 0; i < sizeof(colorTable) / sizeof(colorTable[0]); i++) {
-        if (commandData.equalsIgnoreCase(colorTable[i].name)) {
-          uint32_t color = colorTable[i].color;
-          currentColorRed = (color >> 24) & 0xFF;
-          currentColorGreen = (color >> 16) & 0xFF;
-          currentColorBlue = (color >> 8) & 0xFF;
-          currentColorWhite = color & 0xFF;
+      
+      // Check if it's a hex color (starts with #)
+      if (commandData.startsWith("#")) {
+        String hexStr = commandData.substring(1);
+        hexStr.toUpperCase();
+        
+        if (hexStr.length() == 6 || hexStr.length() == 8) {
+          // Parse hex color
+          unsigned long hexValue = strtoul(hexStr.c_str(), NULL, 16);
+          
+          if (hexStr.length() == 6) {
+            // RGB format: #RRGGBB
+            currentColorRed = (hexValue >> 16) & 0xFF;
+            currentColorGreen = (hexValue >> 8) & 0xFF;
+            currentColorBlue = hexValue & 0xFF;
+            currentColorWhite = 0;
+          } else {
+            // RGBW format: #RRGGBBWW
+            currentColorRed = (hexValue >> 24) & 0xFF;
+            currentColorGreen = (hexValue >> 16) & 0xFF;
+            currentColorBlue = (hexValue >> 8) & 0xFF;
+            currentColorWhite = hexValue & 0xFF;
+          }
+          
           currentEffect = "";
           saveLedStateToEEPROM();
           applyLedState();
           colorFound = true;
-          DEBUG_PRINTLN("Color set to: " + String(colorTable[i].name));
-          break;
+          DEBUG_PRINTLN("Color set to hex: " + commandData);
+        } else {
+          DEBUG_PRINTLN("Invalid hex color format. Use #RRGGBB or #RRGGBBWW");
+          colorFound = true; // Don't check color table
+        }
+      } else {
+        // Check named colors
+        for (int i = 0; i < sizeof(colorTable) / sizeof(colorTable[0]); i++) {
+          if (commandData.equalsIgnoreCase(colorTable[i].name)) {
+            uint32_t color = colorTable[i].color;
+            currentColorRed = (color >> 24) & 0xFF;
+            currentColorGreen = (color >> 16) & 0xFF;
+            currentColorBlue = (color >> 8) & 0xFF;
+            currentColorWhite = color & 0xFF;
+            currentEffect = "";
+            saveLedStateToEEPROM();
+            applyLedState();
+            colorFound = true;
+            DEBUG_PRINTLN("Color set to: " + String(colorTable[i].name));
+            break;
+          }
         }
       }
+      
       if (!colorFound) {
-        DEBUG_PRINTLN("Color not found");
+        DEBUG_PRINTLN("Color not found. Use a color name or hex format #RRGGBB or #RRGGBBWW");
       }
     } else if (commandType.equalsIgnoreCase("B")) { // Set Brightness
       brightness = commandData.toInt();

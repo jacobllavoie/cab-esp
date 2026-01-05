@@ -246,7 +246,7 @@
                     <div class="color-preset" style="background: yellow;" data-color="yellow"></div>
                     <div class="color-preset" style="background: cyan;" data-color="cyan"></div>
                     <div class="color-preset" style="background: magenta;" data-color="magenta"></div>
-                    <div class="color-preset" style="background: orange;" data-color="orange"></div>
+                    <div class="color-preset" style="background: #ff7f00;" data-color="amber"></div>
                 </div>
             </div>
             
@@ -420,10 +420,7 @@
         // Color picker
         colorPicker.addEventListener('change', (e) => {
             const hex = e.target.value;
-            const r = parseInt(hex.substr(1,2), 16);
-            const g = parseInt(hex.substr(3,2), 16);
-            const b = parseInt(hex.substr(5,2), 16);
-            sendCommand(`C,${r},${g},${b},0`);
+            sendCommand(`C,${hex}`);
         });
 
         // Color presets

@@ -21,12 +21,19 @@ class ServerCallbacks : public NimBLEServerCallbacks {
   void onConnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo) override {
     Serial.print("BLE client connected: ");
     Serial.println(connInfo.getAddress().toString().c_str());
+    // Request larger MTU to support longer notifications (default is 23, max is 512)
+    pServer->updateConnParams(connInfo.getConnHandle(), 24, 48, 0, 60);
+    NimBLEDevice::setMTU(512);
   }
   void onDisconnect(NimBLEServer* pServer, NimBLEConnInfo& connInfo, int reason) override {
     Serial.print("BLE client disconnected (reason ");
     Serial.print(reason);
     Serial.print("): ");
     Serial.println(connInfo.getAddress().toString().c_str());
+    
+    // Restart advertising so clients can reconnect
+    NimBLEDevice::startAdvertising();
+    Serial.println("BLE advertising restarted");
   }
 };
 
@@ -72,8 +79,25 @@ class CommandCallbacks : public NimBLECharacteristicCallbacks {
 
 void bleNotify(const String& msg) {
   if (pNotifyChar) {
-    pNotifyChar->setValue((uint8_t*)msg.c_str(), msg.length());
-    pNotifyChar->notify(true);
+    // Get the current MTU size (minus 3 bytes for ATT overhead)
+    uint16_t maxChunkSize = NimBLEDevice::getMTU() - 3;
+    
+    // If message fits in one notification, send it directly
+    if (msg.length() <= maxChunkSize) {
+      pNotifyChar->setValue((uint8_t*)msg.c_str(), msg.length());
+      pNotifyChar->notify(true);
+    } else {
+      // Split into chunks if message is too long
+      size_t offset = 0;
+      while (offset < msg.length()) {
+        size_t chunkSize = min((size_t)maxChunkSize, msg.length() - offset);
+        String chunk = msg.substring(offset, offset + chunkSize);
+        pNotifyChar->setValue((uint8_t*)chunk.c_str(), chunk.length());
+        pNotifyChar->notify(true);
+        offset += chunkSize;
+        delay(20); // Small delay between chunks to avoid overwhelming the connection
+      }
+    }
   }
 }
 
