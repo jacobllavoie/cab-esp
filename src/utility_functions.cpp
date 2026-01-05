@@ -28,7 +28,7 @@ void displayHelp() {
   DEBUG_PRINTLN("**Help Menu**");
   DEBUG_PRINTLN("C,<color_name>: Set color (e.g., C,red)");
   DEBUG_PRINTLN("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
-  DEBUG_PRINTLN("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
+  DEBUG_PRINTLN("E,<effect_name>: Set effect (rainbow, chasing_rainbow, amber_white_strobe, green_white_strobe) (e.g., E,rainbow)");
   DEBUG_PRINTLN("S,<speed>: Set speed (ms) (e.g., S,20)");
   DEBUG_PRINTLN("H: Display help");
   DEBUG_PRINTLN("R: Reboot the device");
@@ -37,7 +37,7 @@ void displayHelp() {
   DEBUG_PRINTLN_BT("**Help Menu**");
   DEBUG_PRINTLN_BT("C,<color_name>: Set color (e.g., C,red)");
   DEBUG_PRINTLN_BT("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
-  DEBUG_PRINTLN_BT("E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)");
+  DEBUG_PRINTLN_BT("E,<effect_name>: Set effect (rainbow, chasing_rainbow, amber_white_strobe, green_white_strobe) (e.g., E,rainbow)");
   DEBUG_PRINTLN_BT("S,<speed>: Set speed (ms) (e.g., S,20)");
   DEBUG_PRINTLN_BT("H: Display help");
   DEBUG_PRINTLN_BT("R: Reboot the device");
@@ -46,7 +46,7 @@ void displayHelp() {
   String helpMessage = "**Help Menu**\n";
   helpMessage += "C,<color_name>: Set color (e.g., C,red)\n";
   helpMessage += "B,<brightness>: Set brightness (0-255) (e.g., B,128)\n";
-  helpMessage += "E,<effect_name>: Set effect (rainbow, chasing_rainbow, flashing_amber, flashing_amber_white) (e.g., E,rainbow)\n";
+  helpMessage += "E,<effect_name>: Set effect (rainbow, chasing_rainbow, amber_white_strobe, green_white_strobe) (e.g., E,rainbow)\n";
   helpMessage += "S,<speed>: Set speed (ms) (e.g., S,20)\n";
   helpMessage += "H: Display help\n";
   helpMessage += "R: Reboot the device\n";

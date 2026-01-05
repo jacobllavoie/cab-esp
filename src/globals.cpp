@@ -11,7 +11,8 @@ int brightness = 255;
 Effect effects[] = {
   {"rainbow", rainbow},
   {"chasing_rainbow", chasingRainbow},
-  {"flashing_amber_white_sequence", flashingAmberWhiteSequence}
+  {"amber_white_strobe", amberWhiteStrobe},
+  {"green_white_strobe", greenWhiteStrobe}
 };
 int numberOfEffects = sizeof(effects) / sizeof(effects[0]);
 

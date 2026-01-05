@@ -61,8 +61,9 @@ void readLedStateFromEEPROM() {
   currentColorWhite = EEPROM.read(EEPROM_WHITE_ADDR);
   animationSpeed = EEPROM.read(EEPROM_SPEED_ADDR);
 
-  // Constrain values
-  brightness = constrain(brightness, 0, 255);
+  // Constrain values and ensure brightness is never 0 (default to 1)
+  if (brightness == 0) brightness = 1;
+  brightness = constrain(brightness, 1, 255);
   animationSpeed = constrain(animationSpeed, 1, 255);
 }
 
@@ -80,8 +81,10 @@ void applyLedState() {
     rainbow(brightness);
   } else if (currentEffect.equalsIgnoreCase("chasing_rainbow")) {
     chasingRainbow(brightness);
-  } else if (currentEffect.equalsIgnoreCase("flashing_amber_white_sequence")) {
-    flashingAmberWhiteSequence(brightness);
+  } else if (currentEffect.equalsIgnoreCase("amber_white_strobe")) {
+    amberWhiteStrobe(brightness);
+  } else if (currentEffect.equalsIgnoreCase("green_white_strobe")) {
+    greenWhiteStrobe(brightness);
   } else if (currentColorRed != 0 || currentColorGreen != 0 || currentColorBlue != 0 || currentColorWhite != 0) {
     for (int j = 0; j < NUM_LEDS; j++) {
       leds.setPixelColor(j, (currentColorRed * brightness) / 255, (currentColorGreen * brightness) / 255, (currentColorBlue * brightness) / 255, currentColorWhite);

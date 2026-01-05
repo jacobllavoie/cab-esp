@@ -39,7 +39,9 @@ void loop() {
     rainbow(brightness);
   } else if (currentEffect == "chasing_rainbow") {
     chasingRainbow(brightness);
-  } else if (currentEffect == "flashing_amber_white_sequence") {
-    flashingAmberWhiteSequence(brightness);
+  } else if (currentEffect == "amber_white_strobe") {
+    amberWhiteStrobe(brightness);
+  } else if (currentEffect == "green_white_strobe") {
+    greenWhiteStrobe(brightness);
   }
 }
