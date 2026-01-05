@@ -7,7 +7,11 @@ void amberWhiteStrobe(int brightness) {
   static unsigned long previousMillis = 0;
   static int sequenceStep = 0;
   static bool ledState = false;
-  long interval = animationSpeed;
+  
+  // Calculate on and off intervals based on duty cycle
+  long onInterval = (animationSpeed * dutyCycle) / 100;
+  long offInterval = (animationSpeed * (100 - dutyCycle)) / 100;
+  long interval = ledState ? onInterval : offInterval;
 
   if (millis() - previousMillis >= interval) {
     previousMillis = millis();
@@ -17,10 +21,12 @@ void amberWhiteStrobe(int brightness) {
       byte rAmber = (255 * brightness) / 255;
       byte gAmber = (191 * brightness) / 255;
       byte bAmber = 0;
+      byte wAmber = 0;
 
-      byte rWhite = 255;
-      byte gWhite = 255;
-      byte bWhite = 255;
+      byte rWhite = 0;
+      byte gWhite = 0;
+      byte bWhite = 0;
+      byte wWhite = (255 * brightness) / 255;
 
       int half = (NUM_LEDS + 1) / 2;
 
@@ -30,11 +36,11 @@ void amberWhiteStrobe(int brightness) {
         case 2:
           for (int i = 0; i < NUM_LEDS; i++) {
             if (i == (NUM_LEDS / 2) && (NUM_LEDS % 2 != 0)) {
-              leds.setPixelColor(i, 0, 0, 0);
+              leds.setPixelColor(i, 0, 0, 0, 0);
             } else if (i < half) {
-              leds.setPixelColor(i, rAmber, gAmber, bAmber);
+              leds.setPixelColor(i, rAmber, gAmber, bAmber, wAmber);
             } else {
-              leds.setPixelColor(i, rWhite, gWhite, bWhite);
+              leds.setPixelColor(i, rWhite, gWhite, bWhite, wWhite);
             }
           }
           break;
@@ -44,18 +50,18 @@ void amberWhiteStrobe(int brightness) {
         case 5:
           for (int i = 0; i < NUM_LEDS; i++) {
             if (i == (NUM_LEDS / 2) && (NUM_LEDS % 2 != 0)) {
-              leds.setPixelColor(i, 0, 0, 0);
+              leds.setPixelColor(i, 0, 0, 0, 0);
             } else if (i < half) {
-              leds.setPixelColor(i, rWhite, gWhite, bWhite);
+              leds.setPixelColor(i, rWhite, gWhite, bWhite, wWhite);
             } else {
-              leds.setPixelColor(i, rAmber, gAmber, bAmber);
+              leds.setPixelColor(i, rAmber, gAmber, bAmber, wAmber);
             }
           }
           break;
       }
     } else {
       for (int i = 0; i < NUM_LEDS; i++) {
-        leds.setPixelColor(i, 0, 0, 0);
+        leds.setPixelColor(i, 0, 0, 0, 0);
       }
     }
 

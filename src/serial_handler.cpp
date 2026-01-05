@@ -119,6 +119,12 @@ void processSerialCommand(String command) {
       saveLedStateToEEPROM();
       applyLedState();
       DEBUG_PRINTLN("Speed set to: " + String(animationSpeed));
+    } else if (commandType.equalsIgnoreCase("D")) { // Set Duty Cycle
+      dutyCycle = commandData.toInt();
+      dutyCycle = constrain(dutyCycle, 1, 99);
+      saveLedStateToEEPROM();
+      applyLedState();
+      DEBUG_PRINTLN("Duty Cycle set to: " + String(dutyCycle) + "%");
     } else {
       DEBUG_PRINTLN("Unknown Command type");
     }

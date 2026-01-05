@@ -40,6 +40,7 @@ extern byte currentColorGreen;
 extern byte currentColorBlue;
 extern byte currentColorWhite;
 extern int animationSpeed;
+extern int dutyCycle;
 extern int brightness;
 extern BluetoothSerial SerialBT;
 // Heartbeat addressable pixel (single LED)

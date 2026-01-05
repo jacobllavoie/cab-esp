@@ -6,9 +6,10 @@
 
 void displayStatus() {
   String statusMessage = "** Current Status **\n";
-  statusMessage += "Effect: " + (currentEffect == "" ? "Solid Color" : currentEffect) + "\n";
+  statusMessage += "Effect: " + currentEffect + "\n";
   statusMessage += "Brightness: " + String(brightness) + "\n";
   statusMessage += "Animation Speed: " + String(animationSpeed) + "\n";
+  statusMessage += "Duty Cycle: " + String(dutyCycle) + "%\n";
   statusMessage += "Color (R,G,B,W): " + String(currentColorRed) + "," + String(currentColorGreen) + "," + String(currentColorBlue) + "," + String(currentColorWhite) + "\n";
   
   Serial.print(statusMessage);
@@ -30,6 +31,7 @@ void displayHelp() {
   DEBUG_PRINTLN("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
   DEBUG_PRINTLN("E,<effect_name>: Set effect (rainbow, chasing_rainbow, amber_white_strobe, green_white_strobe) (e.g., E,rainbow)");
   DEBUG_PRINTLN("S,<speed>: Set speed (ms) (e.g., S,20)");
+  DEBUG_PRINTLN("D,<duty_cycle>: Set duty cycle (1-99%) (e.g., D,50)");
   DEBUG_PRINTLN("H: Display help");
   DEBUG_PRINTLN("R: Reboot the device");
   DEBUG_PRINTLN("STATUS: Display current status");
@@ -39,6 +41,7 @@ void displayHelp() {
   DEBUG_PRINTLN_BT("B,<brightness>: Set brightness (0-255) (e.g., B,128)");
   DEBUG_PRINTLN_BT("E,<effect_name>: Set effect (rainbow, chasing_rainbow, amber_white_strobe, green_white_strobe) (e.g., E,rainbow)");
   DEBUG_PRINTLN_BT("S,<speed>: Set speed (ms) (e.g., S,20)");
+  DEBUG_PRINTLN_BT("D,<duty_cycle>: Set duty cycle (1-99%) (e.g., D,50)");
   DEBUG_PRINTLN_BT("H: Display help");
   DEBUG_PRINTLN_BT("R: Reboot the device");
   DEBUG_PRINTLN_BT("STATUS: Display current status");
@@ -48,6 +51,7 @@ void displayHelp() {
   helpMessage += "B,<brightness>: Set brightness (0-255) (e.g., B,128)\n";
   helpMessage += "E,<effect_name>: Set effect (rainbow, chasing_rainbow, amber_white_strobe, green_white_strobe) (e.g., E,rainbow)\n";
   helpMessage += "S,<speed>: Set speed (ms) (e.g., S,20)\n";
+  helpMessage += "D,<duty_cycle>: Set duty cycle (1-99%) (e.g., D,50)\n";
   helpMessage += "H: Display help\n";
   helpMessage += "R: Reboot the device\n";
   helpMessage += "STATUS: Display current status\n";

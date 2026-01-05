@@ -36,6 +36,9 @@ void saveLedStateToEEPROM() {
   Serial.print("saveLedStateToEEPROM: Speed = ");
   DEBUG_PRINTLN(animationSpeed);
   EEPROM.write(EEPROM_SPEED_ADDR, animationSpeed);
+  Serial.print("saveLedStateToEEPROM: Duty Cycle = ");
+  DEBUG_PRINTLN(dutyCycle);
+  EEPROM.write(EEPROM_DUTY_CYCLE_ADDR, dutyCycle);
   EEPROM.commit();
 
   DEBUG_PRINTLN("saveLedStateToEEPROM: Finished");
@@ -60,11 +63,13 @@ void readLedStateFromEEPROM() {
   currentColorBlue = EEPROM.read(EEPROM_BLUE_ADDR);
   currentColorWhite = EEPROM.read(EEPROM_WHITE_ADDR);
   animationSpeed = EEPROM.read(EEPROM_SPEED_ADDR);
+  dutyCycle = EEPROM.read(EEPROM_DUTY_CYCLE_ADDR);
 
   // Constrain values and ensure brightness is never 0 (default to 1)
   if (brightness == 0) brightness = 1;
   brightness = constrain(brightness, 1, 255);
   animationSpeed = constrain(animationSpeed, 1, 255);
+  dutyCycle = constrain(dutyCycle, 1, 99);
 }
 
 void applyLedState() {

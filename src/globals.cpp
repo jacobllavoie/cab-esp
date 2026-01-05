@@ -3,6 +3,7 @@
 #include "globals.h"
 
 int animationSpeed = 50;
+int dutyCycle = 50; // 50% duty cycle default
 int brightness = 255;
 
 // SerialBT removed - Classic Bluetooth conflicts with NimBLE

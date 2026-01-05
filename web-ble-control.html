@@ -267,7 +267,15 @@
                 <label>
                     Animation Speed: <span class="value-display" id="speedValue">50</span> ms
                 </label>
-                <input type="range" id="speed" min="1" max="200" value="50">
+                <input type="range" id="speed" min="50" max="1500" value="50">
+            </div>
+            
+            <div class="control-group">
+                <h3>⏱️ Duty Cycle</h3>
+                <label>
+                    On Time: <span class="value-display" id="dutyCycleValue">50</span>%
+                </label>
+                <input type="range" id="dutyCycle" min="1" max="99" value="50">
             </div>
             
             <div class="control-group">
@@ -415,6 +423,18 @@
 
         speedSlider.addEventListener('change', (e) => {
             sendCommand(`S,${e.target.value}`);
+        });
+
+        // Duty Cycle control
+        const dutyCycleSlider = document.getElementById('dutyCycle');
+        const dutyCycleValue = document.getElementById('dutyCycleValue');
+
+        dutyCycleSlider.addEventListener('input', (e) => {
+            dutyCycleValue.textContent = e.target.value;
+        });
+
+        dutyCycleSlider.addEventListener('change', (e) => {
+            sendCommand(`D,${e.target.value}`);
         });
 
         // Color picker
